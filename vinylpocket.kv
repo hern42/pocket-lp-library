@@ -1,0 +1,153 @@
+ScreenManagement:
+    MenuScreen:
+    DisplayScreen:
+    SearchScreen:
+    AddNewScreen:
+
+<MenuScreen>:
+    name: 'menu'
+    id: menu
+    
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                text: 'Appli LPs'
+            Label:
+                text: 'nbr_lps: XX'
+        BoxLayout:
+            Button:
+                text: 'See LP lists'
+                on_press: app.root.current= 'display'
+            Button:
+                text: 'Search the db'
+                on_press: app.root.current= 'search'
+        BoxLayout:
+            Button:
+                text: 'Add new LP'
+                on_press: app.root.current= 'addnew'
+            Button:
+                text: 'Exit'
+                on_press: app.stop()
+
+<DisplayScreen>:
+    name: 'display'
+    id: display
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                text: 'Display LP library'
+            Button:
+                text: '<back>'
+                on_press: app.root.current = 'menu'
+        BoxLayout:
+            Label:
+                text: 'artist'
+            CheckBox:
+                group: 'display1'
+                on_active: pass
+            Label:
+                text: 'album'
+            CheckBox:
+                group: 'display1'
+                on_active: pass
+            Label:
+                text: 'year'
+            CheckBox:
+                group: 'display1'
+                on_active: pass
+        BoxLayout:
+            Label:
+                text: 'how many?'
+            TextInput:
+                id: howmany
+                text: '??'
+            Button:
+                text: 'go!'
+                on_press: pass
+        BoxLayout:
+            Label:
+                text: 'Here be LPs...\nMany many LPs...'
+
+<SearchScreen>:
+    name: 'search'
+    id: search
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                text: 'Search the db...'
+            Button:
+                text: '<back>'
+                on_press: app.root.current = 'menu'
+        BoxLayout:
+            Label:
+                text: 'artist'
+            CheckBox:
+                group: 'search1'
+                on_active: pass
+            Label:
+                text: 'album'
+            CheckBox:
+                group: 'search1'
+                on_active: pass
+        BoxLayout:
+            TextInput:
+                id: searchstring
+                text: '??'
+            Button:
+                text: 'go!'
+                on_press: pass
+        BoxLayout:
+            Label:
+                text: 'Search results...\nAnd more results...'
+
+<AddNewScreen>:
+    name: 'addnew'
+    id: addnew
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                text: 'Add new LP'
+            Button:
+                text: '<back>'
+                on_press: app.root.current = 'menu'
+        BoxLayout:
+            Label:
+                text: 'artist'
+            TextInput:
+                id: newartist
+                text: ''
+        BoxLayout:
+            Label:
+                text: 'album'
+            TextInput:
+                id: newalbum
+                text: ''
+        BoxLayout:
+            Label:
+                text: 'year'
+            TextInput:
+                id: newyear
+                text: ''
+        BoxLayout:
+            Label:
+                text: 'format'
+            TextInput:
+                id: newformat
+                text: ''
+        BoxLayout:
+            Label:
+                text: 'comment'
+            TextInput:
+                id: newcomment
+                text: ''
+        BoxLayout:
+            Button:
+                text: 'go!'
+                on_press: pass
