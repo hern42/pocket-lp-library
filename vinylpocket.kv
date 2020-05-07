@@ -14,7 +14,7 @@ ScreenManagement:
             Label:
                 text: 'Appli LPs'
             Label:
-                text: 'nbr_lps: XX'
+                text: 'nbr_lps: ' + str(root.affiche_nbr_lp())
         BoxLayout:
             Button:
                 text: 'See LP lists'
@@ -37,14 +37,16 @@ ScreenManagement:
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
+            size_hint: 1, .25
             Label:
                 text: 'Display LP library'
             Button:
                 text: '<back>'
                 on_press: app.root.current = 'menu'
         BoxLayout:
+            size_hint: 1, .25
             Label:
-                text: 'artist'
+                text: 'Sort by: artist'
             CheckBox:
                 group: 'display1'
                 on_active: pass
@@ -59,6 +61,7 @@ ScreenManagement:
                 group: 'display1'
                 on_active: pass
         BoxLayout:
+            size_hint: 1, .25
             Label:
                 text: 'how many?'
             TextInput:
@@ -67,9 +70,19 @@ ScreenManagement:
             Button:
                 text: 'go!'
                 on_press: pass
-        BoxLayout:
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            scroll_type: ['bars']
+            bar_width: 10
+            bar_color: 1, 0, 0, 1   # red
+            bar_inactive_color: 0, 0, 1, 1   # blue
+            effect_cls: 'ScrollEffect'
+
             Label:
-                text: 'Here be LPs...\nMany many LPs...'
+                size_hint: (1, None)
+                size: self.texture_size
+                text: root.affiche_liste_lp()
 
 <SearchScreen>:
     name: 'search'
@@ -91,6 +104,11 @@ ScreenManagement:
                 on_active: pass
             Label:
                 text: 'album'
+            CheckBox:
+                group: 'search1'
+                on_active: pass
+            Label:
+                text: 'year'
             CheckBox:
                 group: 'search1'
                 on_active: pass
