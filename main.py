@@ -5,7 +5,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-
+from kivy.properties import ObjectProperty
 
 # import other stuff which is needed: sqlite3
 import sqlite3
@@ -30,6 +30,9 @@ class LpLibrary():
 class MenuScreen(Screen):
     """ Menu has 4 items: print/sort info, search, add new, exit
         On top Menu shows the total amount of LPs in the db """
+
+    introtext = 'Appli Vinyl\nin your pocket'
+
     def affiche_nbr_lp(self):
         connection = sqlite3.connect('hern42_vinyls.db')
         for info in connection.execute('SELECT COUNT(*) FROM vinyl'):
@@ -39,10 +42,21 @@ class MenuScreen(Screen):
 
 class DisplayScreen(Screen):
     """ Display allows to display all or sorted part of the db """
+    sort_str = ObjectProperty('')
+    list_lp = ObjectProperty('')
 
-    def affiche_liste_lp(self):
+    def affiche_list_sorted(self):
         connection = sqlite3.connect('hern42_vinyls.db')
-        query = 'SELECT * FROM vinyl ORDER BY artist ASC'
+        if self.sort_str == '':
+            query = 'SELECT * FROM vinyl ORDER BY artist ASC'
+        else:
+            query = 'SELECT * FROM vinyl ORDER BY ' + self.sort_str + ' ASC'
+
+        if self.howmany_input.text != '??':
+            query += ' LIMIT ' + self.howmany_input.text
+        else:
+            pass
+
         string = ''
         for row in connection.execute(query):
             artist = row[1]
@@ -51,7 +65,8 @@ class DisplayScreen(Screen):
             formatlp = row[4]
             comment = row[5]
             string += artist + ' - ' + album + ' (' + year + ')\n'
-        return string
+
+        self.list_lp = string.strip()
 
 
 class SearchScreen(Screen):

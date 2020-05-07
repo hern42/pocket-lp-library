@@ -12,10 +12,18 @@ ScreenManagement:
         orientation: 'vertical'
         BoxLayout:
             Label:
-                text: 'Appli LPs'
+                text: root.introtext
             Label:
-                text: 'nbr_lps: ' + str(root.affiche_nbr_lp())
+                size_hint: .2, 1
+                text: 'nbr lps: ' + str(root.affiche_nbr_lp())
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, .5
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
         BoxLayout:
+            size_hint: 1, .1
             Button:
                 text: 'See LP lists'
                 on_press: app.root.current= 'display'
@@ -23,6 +31,7 @@ ScreenManagement:
                 text: 'Search the db'
                 on_press: app.root.current= 'search'
         BoxLayout:
+            size_hint: 1, .1
             Button:
                 text: 'Add new LP'
                 on_press: app.root.current= 'addnew'
@@ -33,35 +42,39 @@ ScreenManagement:
 <DisplayScreen>:
     name: 'display'
     id: display
+    howmany_input: howmany
 
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
-            size_hint: 1, .25
+            size_hint: 1, .1
             Label:
                 text: 'Display LP library'
             Button:
                 text: '<back>'
                 on_press: app.root.current = 'menu'
         BoxLayout:
-            size_hint: 1, .25
+            size_hint: 1, .1
             Label:
                 text: 'Sort by: artist'
             CheckBox:
                 group: 'display1'
-                on_active: pass
+                text: 'artist'
+                on_active: root.sort_str = self.text
             Label:
                 text: 'album'
             CheckBox:
                 group: 'display1'
-                on_active: pass
+                text: 'title'
+                on_active: root.sort_str = self.text
             Label:
                 text: 'year'
             CheckBox:
                 group: 'display1'
-                on_active: pass
+                text: 'year'
+                on_active: root.sort_str = self.text
         BoxLayout:
-            size_hint: 1, .25
+            size_hint: 1, .1
             Label:
                 text: 'how many?'
             TextInput:
@@ -69,7 +82,7 @@ ScreenManagement:
                 text: '??'
             Button:
                 text: 'go!'
-                on_press: pass
+                on_press: root.affiche_list_sorted()
         ScrollView:
             do_scroll_x: False
             do_scroll_y: True
@@ -78,11 +91,17 @@ ScreenManagement:
             bar_color: 1, 0, 0, 1   # red
             bar_inactive_color: 0, 0, 1, 1   # blue
             effect_cls: 'ScrollEffect'
-
             Label:
+                id: liste_lp
                 size_hint: (1, None)
                 size: self.texture_size
-                text: root.affiche_liste_lp()
+                text: root.list_lp
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, .5
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
 
 <SearchScreen>:
     name: 'search'
@@ -91,12 +110,14 @@ ScreenManagement:
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
+            size_hint: 1, .1
             Label:
                 text: 'Search the db...'
             Button:
                 text: '<back>'
                 on_press: app.root.current = 'menu'
         BoxLayout:
+            size_hint: 1, .1
             Label:
                 text: 'artist'
             CheckBox:
@@ -113,6 +134,7 @@ ScreenManagement:
                 group: 'search1'
                 on_active: pass
         BoxLayout:
+            size_hint: 1, .1
             TextInput:
                 id: searchstring
                 text: '??'
@@ -122,6 +144,12 @@ ScreenManagement:
         BoxLayout:
             Label:
                 text: 'Search results...\nAnd more results...'
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, .5
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
 
 <AddNewScreen>:
     name: 'addnew'
@@ -130,6 +158,7 @@ ScreenManagement:
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
+            size_hint: 1, .3
             Label:
                 text: 'Add new LP'
             Button:
@@ -166,6 +195,7 @@ ScreenManagement:
                 id: newcomment
                 text: ''
         BoxLayout:
+            size_hint: 1, .3
             Button:
                 text: 'go!'
                 on_press: pass
