@@ -15,7 +15,7 @@ ScreenManagement:
                 text: root.introtext
             Label:
                 size_hint: .2, 1
-                text: 'nbr lps: ' + str(root.affiche_nbr_lp())
+                text: 'nbr lps: ' + str(root.print_nbr_lp())
                 canvas.before:
                     Color:
                         rgba: 1, 1, 1, .5
@@ -83,20 +83,21 @@ ScreenManagement:
                 text: '??'
             Button:
                 text: 'go!'
-                on_press: root.affiche_list_sorted()
+                on_press: root.print_list_sorted()
         ScrollView:
             do_scroll_x: False
             do_scroll_y: True
             scroll_type: ['bars']
             bar_width: 10
-            bar_color: 1, 0, 0, 1   # red
-            bar_inactive_color: 0, 0, 1, 1   # blue
+            bar_color: 1, 1, 1, 1   # white
+            bar_inactive_color: 1, 1, 1, .5   # grey
             effect_cls: 'ScrollEffect'
             Label:
                 id: liste_lp
                 size_hint: (1, None)
                 size: self.texture_size
                 text: root.list_lp
+                markup: True
                 canvas.before:
                     Color:
                         rgba: 1, 1, 1, .5
@@ -146,20 +147,21 @@ ScreenManagement:
                 text: ''
             Button:
                 text: 'go!'
-                on_press: root.affiche_list_search()
+                on_press: root.print_list_search()
         ScrollView:
             do_scroll_x: False
             do_scroll_y: True
             scroll_type: ['bars']
             bar_width: 10
-            bar_color: 1, 0, 0, 1   # red
-            bar_inactive_color: 0, 0, 1, 1   # blue
+            bar_color: 1, 1, 1, 1   # white
+            bar_inactive_color: 1, 1, 1, .5   # grey
             effect_cls: 'ScrollEffect'
             Label:
                 id: research_result
                 size_hint: (1, None)
                 size: self.texture_size
                 text: root.search_result
+                markup: True
                 canvas.before:
                     Color:
                         rgba: 1, 1, 1, .5
@@ -170,6 +172,11 @@ ScreenManagement:
 <AddNewScreen>:
     name: 'addnew'
     id: addnew
+    newartist_input: newartist
+    newalbum_input: newalbum
+    newyear_input: newyear
+    newformat_input: newformat
+    newcomment_input: newcomment
 
     BoxLayout:
         orientation: 'vertical'

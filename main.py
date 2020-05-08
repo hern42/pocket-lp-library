@@ -8,12 +8,19 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 
 # import other stuff which is needed: sqlite3
+# the database contains one table 'vinyl'
+# with fields: id, artist, title, year, format, diverse
+# id is INTEGER PRIMARY and needs to be AUTOINCREMENT (tbdone)
+# to be added: purchased_date
 import sqlite3
+
+dbname = 'hern42_vinyls.db'
 
 
 # class LpLibrary managing the db // does nothing at the moment!
 class LpLibrary():
     """ This class takes care of giving the good info to the app """
+    global dbname
 
     def __init__(self, dbname):
         self.connection = sqlite3.connect('dbname')
@@ -33,7 +40,7 @@ class MenuScreen(Screen):
 
     introtext = 'Appli Vinyl\nin your pocket'
 
-    def affiche_nbr_lp(self):
+    def print_nbr_lp(self):
         connection = sqlite3.connect('hern42_vinyls.db')
         for info in connection.execute('SELECT COUNT(*) FROM vinyl'):
             nbr_vinyls = info[0]
@@ -46,7 +53,7 @@ class DisplayScreen(Screen):
     sort_str = ObjectProperty('')
     list_lp = ObjectProperty('')
 
-    def affiche_list_sorted(self):
+    def print_list_sorted(self):
         connection = sqlite3.connect('hern42_vinyls.db')
         if self.sort_str == '':
             query = 'SELECT * FROM vinyl ORDER BY id ASC'
@@ -64,8 +71,9 @@ class DisplayScreen(Screen):
             album = row[2]
             year = row[3]
             formatlp = row[4]
-            comment = row[5]
-            string += artist + ' - ' + album + ' (' + year + ')\n'
+            # comment = row[5]
+            string += '[b]' + artist + '[/b] - ' + album + ' (' + year + ', ' + \
+                      formatlp + ')\n'
 
         connection.close()
         self.list_lp = string.strip()
@@ -76,7 +84,7 @@ class SearchScreen(Screen):
     search_str = ObjectProperty('')
     search_result = ObjectProperty('')
 
-    def affiche_list_search(self):
+    def print_list_search(self):
         connection = sqlite3.connect('hern42_vinyls.db')
         if self.search_str == '':
             query = 'SELECT * FROM vinyl ORDER BY id ASC'
@@ -90,11 +98,13 @@ class SearchScreen(Screen):
             album = row[2]
             year = row[3]
             formatlp = row[4]
-            comment = row[5]
-            string += artist + ' - ' + album + ' (' + year + ')\n'
+            # comment = row[5]
+            string += '[b]' + artist + '[/b] - ' + album + ' (' + year + ', ' + \
+                      formatlp + ')\n'
 
         connection.close()
         self.search_result = string.strip()
+
 
 class AddNewScreen(Screen):
     """ AddNew allows to add a new LP (or maybe to correct an entry) """
