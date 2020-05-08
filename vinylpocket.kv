@@ -40,6 +40,7 @@ ScreenManagement:
                 on_press: app.stop()
 
 <DisplayScreen>:
+    on_enter: root.list_lp = 'The list of LP will be showed here...'
     name: 'display'
     id: display
     howmany_input: howmany
@@ -106,6 +107,8 @@ ScreenManagement:
 <SearchScreen>:
     name: 'search'
     id: search
+    on_enter: root.search_result = 'The list of LP will be showed here...'
+    search_input: searchstring
 
     BoxLayout:
         orientation: 'vertical'
@@ -122,28 +125,41 @@ ScreenManagement:
                 text: 'artist'
             CheckBox:
                 group: 'search1'
-                on_active: pass
+                text: 'artist'
+                on_active: root.search_str = self.text
             Label:
-                text: 'album'
+                text: 'title'
             CheckBox:
                 group: 'search1'
-                on_active: pass
+                text: 'title'
+                on_active: root.search_str = self.text
             Label:
                 text: 'year'
             CheckBox:
                 group: 'search1'
-                on_active: pass
+                text: 'year'
+                on_active: root.search_str = self.text
         BoxLayout:
             size_hint: 1, .1
             TextInput:
                 id: searchstring
-                text: '??'
+                text: ''
             Button:
                 text: 'go!'
-                on_press: pass
-        BoxLayout:
+                on_press: root.affiche_list_search()
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            scroll_type: ['bars']
+            bar_width: 10
+            bar_color: 1, 0, 0, 1   # red
+            bar_inactive_color: 0, 0, 1, 1   # blue
+            effect_cls: 'ScrollEffect'
             Label:
-                text: 'Search results...\nAnd more results...'
+                id: research_result
+                size_hint: (1, None)
+                size: self.texture_size
+                text: root.search_result
                 canvas.before:
                     Color:
                         rgba: 1, 1, 1, .5

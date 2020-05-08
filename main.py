@@ -37,6 +37,7 @@ class MenuScreen(Screen):
         connection = sqlite3.connect('hern42_vinyls.db')
         for info in connection.execute('SELECT COUNT(*) FROM vinyl'):
             nbr_vinyls = info[0]
+        connection.close()
         return nbr_vinyls
 
 
@@ -48,7 +49,7 @@ class DisplayScreen(Screen):
     def affiche_list_sorted(self):
         connection = sqlite3.connect('hern42_vinyls.db')
         if self.sort_str == '':
-            query = 'SELECT * FROM vinyl ORDER BY artist ASC'
+            query = 'SELECT * FROM vinyl ORDER BY id ASC'
         else:
             query = 'SELECT * FROM vinyl ORDER BY ' + self.sort_str + ' ASC'
 
@@ -66,13 +67,34 @@ class DisplayScreen(Screen):
             comment = row[5]
             string += artist + ' - ' + album + ' (' + year + ')\n'
 
+        connection.close()
         self.list_lp = string.strip()
 
 
 class SearchScreen(Screen):
     """ Search allows to search the db according to criteria """
-    pass
+    search_str = ObjectProperty('')
+    search_result = ObjectProperty('')
 
+    def affiche_list_search(self):
+        connection = sqlite3.connect('hern42_vinyls.db')
+        if self.search_str == '':
+            query = 'SELECT * FROM vinyl ORDER BY id ASC'
+        else:
+            query = 'SELECT * FROM vinyl WHERE ' + self.search_str + \
+                    ' LIKE \"%' + self.search_input.text + '%\" ORDER BY id ASC'
+
+        string = ''
+        for row in connection.execute(query):
+            artist = row[1]
+            album = row[2]
+            year = row[3]
+            formatlp = row[4]
+            comment = row[5]
+            string += artist + ' - ' + album + ' (' + year + ')\n'
+
+        connection.close()
+        self.search_result = string.strip()
 
 class AddNewScreen(Screen):
     """ AddNew allows to add a new LP (or maybe to correct an entry) """
