@@ -125,7 +125,6 @@ class AddNewScreen(Screen):
         connection.close()
 
 
-
 # we use a screenmanager
 class ScreenManagement(ScreenManager):
     pass
@@ -144,4 +143,3 @@ class VinylPocketApp(App):
 # main app
 if __name__ == '__main__':
     VinylPocketApp().run()
-    print('bye')
