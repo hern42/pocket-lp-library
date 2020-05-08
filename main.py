@@ -9,10 +9,10 @@ from kivy.properties import ObjectProperty
 
 # import other stuff which is needed: sqlite3
 # the database contains one table 'vinyl'
-# with fields: id, artist, title, year, format, diverse
-# id is INTEGER PRIMARY and needs to be AUTOINCREMENT (tbdone)
-# to be added: purchased_date
+# with fields: id, artist, title, year, format, diverse, purchase_date
+# id is INTEGER PRIMARY and needs to be AUTOINCREMENT
 import sqlite3
+import datetime
 
 dbname = 'hern42_vinyls.db'
 
@@ -60,7 +60,7 @@ class DisplayScreen(Screen):
         else:
             query = 'SELECT * FROM vinyl ORDER BY ' + self.sort_str + ' ASC'
 
-        if self.howmany_input.text != '??':
+        if self.howmany_input.text.isdigit():
             query += ' LIMIT ' + self.howmany_input.text
         else:
             pass
@@ -108,7 +108,22 @@ class SearchScreen(Screen):
 
 class AddNewScreen(Screen):
     """ AddNew allows to add a new LP (or maybe to correct an entry) """
-    pass
+
+    def add_new_lp(self):
+        connection = sqlite3.connect('hern42_vinyls.db')
+        fields = []
+        fields.append(self.newartist_input.text)
+        fields.append(self.newalbum_input.text)
+        fields.append(self.newyear_input.text)
+        fields.append(self.newformat_input.text)
+        fields.append(self.newcomment_input.text)
+        fields.append(str(datetime.date.today()))
+        print(fields)
+        query = 'INSERT INTO vinyl (artist, title, year, format, diverse, purchase_date) VALUES (?,?,?,?,?,?)'
+        connection.execute(query, fields)
+        connection.commit()
+        connection.close()
+
 
 
 # we use a screenmanager
