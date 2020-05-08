@@ -14,24 +14,8 @@ from kivy.properties import ObjectProperty
 import sqlite3
 import datetime
 
+# dbname = '/storage/emulated/0/kivy/pocketvinyl/hern42_vinyls.db'  --->  pour l'appli android
 dbname = 'hern42_vinyls.db'
-
-
-# class LpLibrary managing the db // does nothing at the moment!
-class LpLibrary():
-    """ This class takes care of giving the good info to the app """
-    global dbname
-
-    def __init__(self, dbname):
-        self.connection = sqlite3.connect('dbname')
-        print('db opened...')
-        for info in self.connection.execute('SELECT COUNT(*) FROM vinyl'):
-            self.nbr_vinyls = info[0]
-
-    def __del__(self):
-        self.connection.close()
-        print('db closed.')
-
 
 # the app has 4 screens
 class MenuScreen(Screen):
@@ -41,7 +25,7 @@ class MenuScreen(Screen):
     introtext = 'Appli Vinyl\nin your pocket'
 
     def print_nbr_lp(self):
-        connection = sqlite3.connect('hern42_vinyls.db')
+        connection = sqlite3.connect(dbname)
         for info in connection.execute('SELECT COUNT(*) FROM vinyl'):
             nbr_vinyls = info[0]
         connection.close()
@@ -54,7 +38,7 @@ class DisplayScreen(Screen):
     list_lp = ObjectProperty('')
 
     def print_list_sorted(self):
-        connection = sqlite3.connect('hern42_vinyls.db')
+        connection = sqlite3.connect(dbname)
         if self.sort_str == '':
             query = 'SELECT * FROM vinyl ORDER BY id ASC'
         else:
@@ -85,7 +69,7 @@ class SearchScreen(Screen):
     search_result = ObjectProperty('')
 
     def print_list_search(self):
-        connection = sqlite3.connect('hern42_vinyls.db')
+        connection = sqlite3.connect(dbname)
         if self.search_str == '':
             query = 'SELECT * FROM vinyl ORDER BY id ASC'
         else:
@@ -110,7 +94,7 @@ class AddNewScreen(Screen):
     """ AddNew allows to add a new LP (or maybe to correct an entry) """
 
     def add_new_lp(self):
-        connection = sqlite3.connect('hern42_vinyls.db')
+        connection = sqlite3.connect(dbname)
         fields = []
         fields.append(self.newartist_input.text)
         fields.append(self.newalbum_input.text)
